@@ -123,6 +123,7 @@ def train(data, dev_data, test_data, parser, classifier, charEmbedding, vocab, c
                     if config.save_after > 0 and iter > config.save_after:
                         torch.save(parser.model.state_dict(), config.save_model_path)
                         torch.save(charEmbedding.model.state_dict(), config.save_char_model_path)
+                        torch.save(classifier.model.state_dict(), config.save_classifier_model_path)
 
 
 def evaluate(data, parser, charEmbedding, vocab, char_vocab, outputFile):
@@ -206,15 +207,14 @@ if __name__ == '__main__':
     argparser.add_argument('--thread', default=4, type=int, help='thread num')
     argparser.add_argument('--use-cuda', action='store_true', default=True)
     argparser.add_argument('--use_pretrain', action='store_true', default=False)
-    argparser.add_argument('--unlabelled', default='')
 
     args, extra_args = argparser.parse_known_args()
     config = Configurable(args.config_file, extra_args)
 
     # vocab = creatVocab(config.train_file, config.min_occur_count)
 
-    if args.unlabelled != "":
-        char_vocab = createCharVocab([config.train_file, config.train_target_file, args.unlabelled],
+    if config.unlabelled_file != "":
+        char_vocab = createCharVocab([config.train_file, config.train_target_file, config.unlabelled_file],
                                      config.min_occur_count)
     else:
         char_vocab = createCharVocab([config.train_file, config.train_target_file],
@@ -224,8 +224,8 @@ if __name__ == '__main__':
         vocab = pickle.load(open(config.load_vocab_path, 'rb'))
         vec = vocab.create_pretrained_embs(config.pretrained_embeddings_file)
     else:
-        if args.unlabelled != "":
-            vocab = creatVocab([config.train_file, config.train_target_file, args.unlabelled]
+        if config.unlabelled_file != "":
+            vocab = creatVocab([config.train_file, config.train_target_file, config.unlabelled_file]
                                , config.min_occur_count)
         else:
             vocab = creatVocab([config.train_file, config.train_target_file]

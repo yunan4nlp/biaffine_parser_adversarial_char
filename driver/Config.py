@@ -38,6 +38,10 @@ class Configurable(object):
         return self._config.get('Data','train_target_file')
 
     @property
+    def unlabelled_file(self):
+        return self._config.get('Data','unlabelled_file')
+
+    @property
     def dev_file(self):
         return self._config.get('Data','dev_file')
     @property
@@ -59,6 +63,10 @@ class Configurable(object):
     @property
     def save_char_model_path(self):
         return self._config.get('Save','save_char_model_path')
+
+    @property
+    def save_classifier_model_path(self):
+        return self._config.get('Save','save_classifier_model_path')
     @property
     def save_vocab_path(self):
         return self._config.get('Save','save_vocab_path')
@@ -74,6 +82,9 @@ class Configurable(object):
     @property
     def load_char_model_path(self):
         return self._config.get('Save', 'load_char_model_path')
+    @property
+    def load_classifier_model_path(self):
+        return self._config.get('Save', 'load_classifier_model_path')
     @property
     def load_vocab_path(self):
         return self._config.get('Save', 'load_vocab_path')
